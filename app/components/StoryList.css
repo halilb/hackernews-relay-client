@@ -1,0 +1,27 @@
+.filters {
+  margin: 35px;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.filters li {
+  display: inline;
+}
+
+.filters li a {
+  color: inherit;
+  margin: 20px;
+  padding: 3px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.filters li a.selected,
+.filters li a:hover {
+  color: red;
+}
+

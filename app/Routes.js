@@ -1,33 +1,30 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { IndexRoute, Route } from 'react-router';
+import Header from '../app/components/Header';
+import StoryList from '../app/components/StoryList';
 
-import App from './components/App';
-import StoryList from './components/StoryList';
+class StoryListRoute extends Relay.Route {
+  static routeName = 'StoryListRoute';
+  static queries = {
+    store: (Component) => Relay.QL`
+      query root {
+        hn { ${Component.getFragment('store')} },
+      }
+    `,
+  };
+}
 
-const StoreQuery = {
-  store: (Component) => Relay.QL`
-    query root {
-      hn { ${Component.getFragment('store')} },
-    }
-  `,
-};
-
-export default (
-  <Route
-    path="/"
-    component={App}
-    queries={StoreQuery}
-  >
-    <IndexRoute
-      component={StoryList}
-      queries={StoreQuery}
-      prepareParams={() => ({ storyType: 'top' })}
+const RootContainer = (
+  <div>
+    <Header />
+    <Relay.RootContainer
+      Component={StoryList}
+      route={new StoryListRoute()}
+      renderLoading={() => <h2>Loading...</h2>}
     />
-    <Route
-      path=":storyType"
-      component={StoryList}
-      queries={StoreQuery}
-    />
-  </Route>
+  </div>
 );
+
+export default {
+  RootContainer,
+};

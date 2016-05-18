@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Relay from 'react-relay';
+import { Link } from 'react-router';
 
 class StoryListItem extends React.Component {
 
@@ -12,8 +13,11 @@ class StoryListItem extends React.Component {
 
     return (
       <div>
-        <h3><a href={item.url}>{item.title}</a></h3>
-        <h4>{item.score} - {item.by.id}</h4>
+        <span>{item.score} Score</span>{' '}
+        <Link to={`comments/${item.id}`}>{item.descendants} Comments</Link>
+        <h3>
+          <a href={item.url}>{item.title}</a>
+        </h3>
         <hr />
       </div>
     );
@@ -27,10 +31,8 @@ export default Relay.createContainer(StoryListItem, {
         id
         title,
         score,
+        descendants,
         url
-        by {
-          id
-        }
       }
     `,
   },

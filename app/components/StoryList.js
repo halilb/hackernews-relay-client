@@ -1,7 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import Relay from 'react-relay';
+import classnames from 'classnames';
 
 import StoryListItem from './StoryListItem';
+
+import style from './StoryList.css';
+
+const STORY_TYPES = [
+  'top',
+  'new',
+  'ask',
+  'show',
+];
 
 class StoryList extends Component {
 
@@ -13,11 +23,38 @@ class StoryList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      storyType: STORY_TYPES[0],
+    };
+  }
+
+  _changeStoryType(storyType) {
+    this.props.relay.setVariables({ storyType });
+    this.setState({ storyType });
+  }
+
+  _renderStoryTypes() {
+    const items = STORY_TYPES.map(type => (
+      <li key={type}>
+        <a
+          className={classnames({ selected: this.state.storyType === type })}
+          onClick={this._changeStoryType.bind(this, type)}
+        >
+          {type}
+        </a>
+      </li>
+    ));
+
+    return (
+      <ul className={style.filters}>
+        {items}
+      </ul>
+    );
   }
 
   _renderItems() {
     const stories = this.props.store.stories;
+
     if (stories) {
       return stories.map(
         (store, idx) => <StoryListItem key={idx} store={store} />
@@ -28,6 +65,7 @@ class StoryList extends Component {
   render() {
     return (
       <div>
+        {this._renderStoryTypes()}
         {this._renderItems()}
       </div>
     );
@@ -36,7 +74,7 @@ class StoryList extends Component {
 
 export default Relay.createContainer(StoryList, {
   initialVariables: {
-    storyType: 'top',
+    storyType: STORY_TYPES[0],
   },
 
   fragments: {
