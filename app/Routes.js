@@ -1,7 +1,5 @@
 import React from 'react';
 import Relay from 'react-relay';
-import Header from '../app/components/Header';
-import StoryList from '../app/components/StoryList';
 
 class StoryListRoute extends Relay.Route {
   static routeName = 'StoryListRoute';
@@ -14,17 +12,23 @@ class StoryListRoute extends Relay.Route {
   };
 }
 
-const RootContainer = (
-  <div>
-    <Header />
-    <Relay.RootContainer
-      Component={StoryList}
-      route={new StoryListRoute()}
-      renderLoading={() => <h2>Loading...</h2>}
-    />
-  </div>
-);
+class StoryCommentsRoute extends Relay.Route {
+  static routeName = 'StoryCommentsRoute';
+  static queries = {
+    store: (Component, { storyID }) => Relay.QL`
+      query root {
+        hn {
+            ${Component.getFragment('store', { storyID })}
+          }
+        }
+    `,
+  };
+  static paramDefinitions = {
+    storyID: { required: true },
+  };
+}
 
 export default {
-  RootContainer,
+  StoryListRoute,
+  StoryCommentsRoute,
 };

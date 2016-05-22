@@ -6,7 +6,9 @@ export default class App extends Component {
   render() {
     return (
       <div className={style.container}>
-        <h1 className={style.title}>Hacker News</h1>
+        <a href="#" className={style.title}>
+            Hacker News
+        </a>
       </div>
     );
   }
